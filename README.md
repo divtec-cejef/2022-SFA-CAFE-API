@@ -10,8 +10,8 @@ L'application contiendra une base de donnée afin de permettre aux utilisateurs 
 
 ### Tables
 L'application contiendra différentes tables.
-*Table utilisateur
-*Table dépenses
+* Table utilisateur
+* Table dépenses
 
 
 ## Backend
