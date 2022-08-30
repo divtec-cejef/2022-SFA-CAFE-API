@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Utilisateur;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UtilisateurController extends Controller
@@ -13,27 +15,62 @@ class UtilisateurController extends Controller
      *
      * @response 201
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      * @throws ValidationException
      */
-    public function createUser(Request $request)
+    public function register(Request $request): JsonResponse
     {
-        $this->validate($request, Utilisateur::validateRules());
-        return Utilisateur::create($request->all());
+        if ($this->validate($request, Utilisateur::validateRules())) {
+            Utilisateur::create([
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+            return Response()->json([
+                'Success' => 'L\'utilisateur a bien été créé.'
+            ]);
+        } else {
+            return Response()->json([
+                'Error' => 'L\'utilisateur n\'a pas pu être créé.'
+            ]);
+        }
     }
 
     /**
-     * Confirmer la connexion
+     * Authentifier l'utilisateur
      *
      * @response 200
      *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws ValidationException
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function authConfirm(Request $request)
+    public function authenticate(Request $request): JsonResponse
     {
-        $this->validate($request, Utilisateur::validateRules());
-        return Utilisateur::create($request->all());
+        $utilisateur = Utilisateur::where('email', $request->email)->first();
+
+        if (Hash::check($request->password, $utilisateur->password)) {
+            return Response()->json([
+                'token' => $utilisateur->createToken(time())->plainTextToken
+            ]);
+        } else {
+            return Response()->json([
+                'error' => 'Les informations de connexion sont incorrectes.'
+            ]);
+        }
+
+    }
+
+    /**
+     * Fonction de test pour la connexion à l'API
+     *
+     * @return JsonResponse
+     */
+    public function dashboard(): JsonResponse {
+        return Response()->json([
+            'success' => 'Bienvenue'
+        ]);
     }
 
     /**
@@ -43,53 +80,8 @@ class UtilisateurController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showOneUser($id)
+    public function showUser($id)
     {
         return Utilisateur::findOrFail($id);
-    }
-
-    /**
-     * Valide la saisie des données dans la requête
-     * Met à jour une tache
-     *
-     * @response 200
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-    public function update($id, Request $request)
-    {
-        $this->validate($request, Tache::validateRules());
-        Tache::findOrFail($id)->update($request->all());
-        return Tache::findOrFail($id);
-    }
-
-    /**
-     * Supprime une tache
-     *
-     * @response 204
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete($id)
-    {
-        Tache::findOrFail($id)->delete();
-        return response('', 204);
-    }
-
-    /**
-     * Valide la saisie des données dans la requête
-     * Change l'état d'une tache à terminé
-     *
-     * @response 200
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function completed($id)
-    {
-        $task = Tache::findOrFail($id);
-        $task->complet = 1;
-        $task->update();
-        return Tache::findOrFail($id);
     }
 }
