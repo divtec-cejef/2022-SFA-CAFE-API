@@ -94,7 +94,7 @@ class UtilisateurController extends Controller
         // Récupération de tous les prix des achats et de tous les versements
         $solde = 0;
         foreach ($allAchats as $achat){
-            $solde -= $achat->prix;
+            $solde -= $achat->prix * $achat->quantite;
         }
         foreach ($allVersements as $versement){
             $solde += $versement->montant;
@@ -102,6 +102,34 @@ class UtilisateurController extends Controller
 
         return Response()->json([
             'Solde' => $solde
+        ]);
+    }
+
+    /**
+     * Affiche l'historique des transactions d'un utilisateur selon son id
+     *
+     * @response 200
+     * @param $id
+     * @return mixed Historique de transactions du compte
+     */
+    public function showHistorique($id): mixed
+    {
+        // Récupère tous les achats réalisés par l'utilisateur
+        $allAchats = Achat::where('id_utilisateur', $id)->get();
+
+        // Récupère tous les versements réalisés par l'utilisateur
+        $allVersements = Versement::where('id_utilisateur', $id)->get();
+
+        // Merge les deux tableaux et affiche la date de création pour chaque transaction
+        $allTransactions = $allAchats->merge($allVersements)->makeVisible('created_at')->toArray();
+
+        // Trie la liste en fonction des dates (récentes -> anciennes)
+        usort($allTransactions, function($a, $b) {
+            return strtotime($a['created_at']) + strtotime($b['created_at']);
+        });
+
+        return Response()->json([
+            'Historique' => $allTransactions
         ]);
     }
 }

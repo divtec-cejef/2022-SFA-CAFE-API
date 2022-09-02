@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route pour créer un nouvel utilisateur
-Route::post('register', [UtilisateurController::class, 'register']);
+Route::post('utilisateur/register', [UtilisateurController::class, 'register']);
 
 // Route pour se connecter et recevoir un token de connexion
-Route::post('login', [UtilisateurController::class, 'authenticate']);
+Route::post('utilisateur/login', [UtilisateurController::class, 'authenticate']);
 
 // Route pour récupérer les informations d'un utilisateur selon son ID
 Route::get('utilisateur/{id}', [UtilisateurController::class, 'showUtilisateur'])
@@ -35,6 +35,10 @@ Route::post('utilisateur/{id}/achat', [AchatController::class, 'achatCafe'])
 Route::post('utilisateur/{id}/versement', [VersementController::class, 'versement'])
     ->middleware('auth:sanctum');
 
-// Route pour verser un montant à son solde
+// Route pour visualiser son solde
 Route::get('utilisateur/{id}/solde', [UtilisateurController::class, 'showSolde'])
+    ->middleware('auth:sanctum');
+
+// Route pour visualiser l'historique de ses transactions
+Route::get('utilisateur/{id}/historique', [UtilisateurController::class, 'showHistorique'])
     ->middleware('auth:sanctum');
