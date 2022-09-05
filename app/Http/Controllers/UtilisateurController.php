@@ -22,21 +22,16 @@ class UtilisateurController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        if ($this->validate($request, Utilisateur::validateRules())) {
-            Utilisateur::create([
-                'nom' => $request->nom,
-                'prenom' => $request->prenom,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
-            return Response()->json([
-                'Message' => 'L\'utilisateur a bien été créé.'
-            ]);
-        } else {
-            return Response()->json([
-                'Message' => 'L\'utilisateur n\'a pas pu être créé.'
-            ]);
-        }
+        //throw_if($this->validate($request, Utilisateur::validateRules()), UniqueEmailException::class, 'Failed to create ');
+        Utilisateur::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+        return Response()->json([
+            'Message' => 'L\'utilisateur a bien été créé.'
+        ]);
     }
 
     /**

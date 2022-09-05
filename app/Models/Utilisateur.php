@@ -8,6 +8,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Utilisateur extends Model
 {
+
+    // Messages d'erreurs
+    // Affiche ce message lors qu'une adresse e-mail est déjà utilisée
+    public const emailAlreadyUsed = "L'adresse e-mail est déjà utilisée.";
+    public const unableToCreateUser = "Impossible de créer l'utilisateur.";
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

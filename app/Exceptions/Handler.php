@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Models\Utilisateur;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -22,7 +24,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        QueryException::class
     ];
 
     /**
@@ -41,10 +43,37 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Retourne une exception lors de la création de l'utilisateur
+     * Retourne une erreur lorsque l'adresse e-mail est déjà utilisée
+     * Retourne une erreur général lorsqu'il s'agit d'une erreur serveur
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable $exception
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof QueryException) {
+            $errorCode = $exception->errorInfo[1];
+            if($errorCode == 1062){
+                return response()->json([
+                    'message' => Utilisateur::emailAlreadyUsed
+                ], 409);
+            } else {
+                return response([
+                    'message'=> Utilisateur::unableToCreateUser
+                ], 500);
+            }
+        }
+        return parent::render($request, $exception);
     }
 }

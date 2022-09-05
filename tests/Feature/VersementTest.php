@@ -6,7 +6,7 @@ use App\Models\Utilisateur;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class UtilisateurTest extends TestCase
+class VersementTest extends TestCase
 {
 
     use DatabaseTransactions;
