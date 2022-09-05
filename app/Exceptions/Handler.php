@@ -3,8 +3,13 @@
 namespace App\Exceptions;
 
 use App\Models\Utilisateur;
+use ErrorException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Psr\Log\LogLevel;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -12,7 +17,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of exception types with their corresponding custom log levels.
      *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     * @var array<class-string<Throwable>, LogLevel::*>
      */
     protected $levels = [
         //
@@ -21,10 +26,11 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        QueryException::class
+        QueryException::class,
+        ErrorException::class
     ];
 
     /**
@@ -51,29 +57,38 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Retourne une exception lors de la création de l'utilisateur
-     * Retourne une erreur lorsque l'adresse e-mail est déjà utilisée
-     * Retourne une erreur général lorsqu'il s'agit d'une erreur serveur
+     * Retourne les différentes exceptions
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable $exception
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @param Throwable $e
+     * @return Response|JsonResponse
      * @throws Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e): Response|JsonResponse
     {
-        if ($exception instanceof QueryException) {
-            $errorCode = $exception->errorInfo[1];
+        // Erreurs générés suite au Register
+        if ($e instanceof QueryException) {
+            $errorCode = $e->errorInfo[1];
             if($errorCode == 1062){
                 return response()->json([
-                    'message' => Utilisateur::emailAlreadyUsed
+                    'error' => Utilisateur::emailAlreadyUsed
                 ], 409);
             } else {
                 return response([
-                    'message'=> Utilisateur::unableToCreateUser
+                    'error'=> Utilisateur::unableToCreateUser
                 ], 500);
             }
         }
-        return parent::render($request, $exception);
+
+        // Erreur généré suite au Login
+        if ($e instanceof ErrorException) {
+            $errorCode = $e->getCode();
+            if ($errorCode == 0) {
+                return response()->json([
+                    'error' => Utilisateur::emailNotFound
+                ], 400);
+            }
+        }
+        return parent::render($request, $e);
     }
 }

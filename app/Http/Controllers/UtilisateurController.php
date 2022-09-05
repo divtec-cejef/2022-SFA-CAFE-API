@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\WrongEmailException;
 use App\Models\Achat;
 use App\Models\Utilisateur;
 use App\Models\Versement;
@@ -9,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class UtilisateurController extends Controller
 {
@@ -41,6 +43,7 @@ class UtilisateurController extends Controller
      * @response 200
      * @param Request $request
      * @return JsonResponse
+     * @throws Throwable
      */
     public function authenticate(Request $request): JsonResponse
     {
@@ -55,7 +58,6 @@ class UtilisateurController extends Controller
                 'Message' => 'Les informations de connexion sont incorrectes.'
             ]);
         }
-
     }
 
     /**
