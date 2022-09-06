@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Achat;
 use App\Models\Utilisateur;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Testing\Fluent\AssertableJson;
-use PHPUnit\Framework\Constraint\Count;
 use Tests\TestCase;
 
 class UtilisateurTest extends TestCase

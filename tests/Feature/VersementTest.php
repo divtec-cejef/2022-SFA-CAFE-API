@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Achat;
 use App\Models\Utilisateur;
 use App\Models\Versement;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
