@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\WrongEmailException;
 use App\Models\Achat;
 use App\Models\Utilisateur;
 use App\Models\Versement;
@@ -24,7 +23,6 @@ class UtilisateurController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        //throw_if($this->validate($request, Utilisateur::validateRules()), UniqueEmailException::class, 'Failed to create ');
         Utilisateur::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -55,7 +53,7 @@ class UtilisateurController extends Controller
             ]);
         } else {
             return Response()->json([
-                'Message' => 'Les informations de connexion sont incorrectes.'
+                'error' => 'Le mot de passe est incorrecte.'
             ]);
         }
     }
@@ -125,8 +123,16 @@ class UtilisateurController extends Controller
             return strtotime($a['created_at']) + strtotime($b['created_at']);
         });
 
-        return Response()->json([
-            'Historique' => $allTransactions
-        ]);
+        if (!empty($allTransactions)) {
+            return Response()->json([
+                'Historique' => $allTransactions
+            ]);
+        } else {
+            return Response()->json([
+                'Historique' => 'Aucune transaction n\'a été effectué avec cet utilisateur.'
+            ]);
+        }
+
+
     }
 }

@@ -11,7 +11,7 @@ class Utilisateur extends Model
 
     // Messages d'erreurs
     public const emailAlreadyUsed = "L'adresse e-mail est déjà utilisée.";  // E-mail déjà utilisée à la création du compte
-    public const unableToCreateUser = "Impossible de créer l'utilisateur."; // Erreur serveur à la création de l'utilisateur
+    public const unableToCreateUser = "Impossible de créer l'utilisateur. Veuillez contacter un administrateur."; // Erreur serveur à la création de l'utilisateur
     public const emailNotFound = "L'adresse e-mail n'existe pas.";          // Tentative de connexion à un e-mail inexistant dans la BDD
 
     use HasApiTokens, HasFactory, Notifiable;
