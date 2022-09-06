@@ -2,7 +2,7 @@
 API de l'application Pause Café
 
 ## Définition
-L'application Pause Café développé en Laravel/Vue.js est une application permettant de gérer la machine à café de la salle des profs dans l'atelier informatique. Cette dernière permet à un utilisateur (Professeur) d'ajouter un café à son solde de café, il pourra également ajouté des dépenses personnelles (tels que la crème ou le sucre). Ces informations seront utilisés ultérieurement pour effectuer les comptes de chacun. 
+L'application Pause Café développé en Laravel 9 / Vue.js 3.0 est une application permettant de gérer la machine à café de la salle des profs dans l'atelier informatique. Cette dernière permet à un utilisateur (Professeur) d'ajouter un café à son solde de café, il pourra également ajouté des dépenses personnelles (tels que la crème ou le sucre). Ces informations seront utilisés ultérieurement pour effectuer les comptes de chacun. 
 
 
 ## Base de donnée
