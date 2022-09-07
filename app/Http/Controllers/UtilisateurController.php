@@ -132,7 +132,5 @@ class UtilisateurController extends Controller
                 'Historique' => 'Aucune transaction n\'a été effectué avec cet utilisateur.'
             ]);
         }
-
-
     }
 }

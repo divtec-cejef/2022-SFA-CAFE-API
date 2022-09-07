@@ -3,7 +3,6 @@
 use App\Http\Controllers\AchatController;
 use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\VersementController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -6,7 +6,7 @@ namespace Database\Seeders;
 use App\Models\Utilisateur;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class UtilisateurSeeder extends Seeder
 {
     /**
      * Seed the application's database.
