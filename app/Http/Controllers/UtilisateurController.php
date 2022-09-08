@@ -116,7 +116,7 @@ class UtilisateurController extends Controller
         $allVersements = Versement::where('id_utilisateur', $id)->get();
 
         // Merge les deux tableaux et affiche la date de création pour chaque transaction
-        $allTransactions = $allAchats->merge($allVersements)->makeVisible('created_at')->toArray();
+        $allTransactions = $allAchats->concat($allVersements)->makeVisible('created_at')->toArray();
 
         // Trie la liste en fonction des dates (récentes -> anciennes)
         usort($allTransactions, function($a, $b) {
