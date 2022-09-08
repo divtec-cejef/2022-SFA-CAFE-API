@@ -8,16 +8,12 @@ L'application Pause Café développé en Laravel 9 / Vue.js 3.0 est une applicat
 ## Base de donnée
 L'application contiendra une base de donnée afin de permettre aux utilisateurs d'avoir chacun leur propre compte ainsi que leur propre solde.
 
-### Tables
-L'application contiendra différentes tables.
-* Table utilisateur
-* Table achat
-* Table versement
-
-
 ## Backend
 Le Backend sera développé avec Laravel, il contiendra la gestion des utilisateurs, l'authentification, la création et la maintenance de la base de donnée et les informations à remonter au Frontend.
 
 
 ## Frontend
 Le Frontend sera développé avec Vue.js et Quasar afin que le développement puisse être déployer en tant que site web ou application. Le Frontend contiendra 3 écrans principales : l'écran de connexion, l'écran principal (achat de café ou achat spécifique) et l'écran contenant le formulaire contenant les achats spécifiques.
+
+## Wiki
+* https://github.com/divtec-cejef/2022-SFA-CAFE-API/wiki
