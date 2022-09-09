@@ -14,6 +14,9 @@ class UtilisateurTest extends TestCase
 
     use DatabaseTransactions;
 
+    // Déclaration des variables utilisées pour les tests
+    private $utilisateur, $token, $id;
+
     /**
      * Register et login d'un utilisateur afin de créer un token
      * Cette méthode est lancée avec l'exécution de chaque test
@@ -28,7 +31,7 @@ class UtilisateurTest extends TestCase
         $this->utilisateur = Utilisateur::factory()->make();
 
         // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
-        $response = $this->post('api/utilisateur/register',
+        $this->post('api/utilisateur/register',
             [
                 'nom' => $this->utilisateur->nom,
                 'prenom' => $this->utilisateur->prenom,
@@ -36,26 +39,12 @@ class UtilisateurTest extends TestCase
                 'password' => $this->utilisateur->password
             ]);
 
-        $response->assertStatus(200); // Affirme que la réponse a un code d'état 200
-        $response->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
-            'Message' => 'L\'utilisateur a bien été créé.'
-        ]);
-        $this->assertDatabaseHas('utilisateurs', [ // Check si la base de données contient l'utilisateur qui vient d'être ajouté
-            'nom' => $this->utilisateur->nom,
-            'prenom' => $this->utilisateur->prenom,
-            'email' => $this->utilisateur->email
-            // 'password' => $utilisateur->password
-        ]);
-
         // Appelle la route api/utilisateur/login pour login l'utilisateur et récupérer un token
         $loginResponse = $this->post('api/utilisateur/login',
             [
                 'email' => $this->utilisateur->email,
                 'password' => $this->utilisateur->password
             ]);
-
-        $loginResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
-        $loginResponse->assertJson(fn (AssertableJson $json) => $json->has('token')); // Check si la réponse contient un champ token
 
         $this->token = $loginResponse->json(['token']); // Récupération du token
         $this->id = Utilisateur::where('email', $this->utilisateur->email)->first()->id; // Récupération de l'ID de l'utilisateur qui vient d'être ajouté
@@ -69,9 +58,6 @@ class UtilisateurTest extends TestCase
      */
     public function testShowUser(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
         $showUserResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -96,9 +82,6 @@ class UtilisateurTest extends TestCase
      */
     public function testSoldeWithOnlyPurchased(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment 3x
         // Dont une fois avec 3 cafés
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
@@ -143,9 +126,6 @@ class UtilisateurTest extends TestCase
      */
     public function testSoldeAll(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment 3x
         // Dont une fois avec 3 cafés
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
@@ -199,9 +179,6 @@ class UtilisateurTest extends TestCase
      */
     public function testHistoryWithDatas(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         $achatResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
             ->post('api/utilisateur/' . $this->id . '/achat', [
                 'libelle'=>'Achat de café',
@@ -241,9 +218,6 @@ class UtilisateurTest extends TestCase
      */
     public function testHistoryWithNoDatas(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Récupère le solde de l'utilisateur
         $HistoriqueResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
             ->get('api/utilisateur/' . $this->id . '/historique');
@@ -269,9 +243,6 @@ class UtilisateurTest extends TestCase
      */
     public function testAchat(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
         // Quantité est exprès non spécifié afin de vérifier que la valeur par défaut s'applique correctement
@@ -304,9 +275,6 @@ class UtilisateurTest extends TestCase
      */
     public function testAchatWithMultipleQte(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
         $achatResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -344,9 +312,6 @@ class UtilisateurTest extends TestCase
      */
     public function testVersement(): void
     {
-        //Appelle le setup
-        parent::setUp();
-
         // Appelle la route api/utilisateur/id pour récupérer les données de l'utilisateur créé précédemment
         // Il est obligatoire de passer en Header le token afin de pouvoir accéder aux données
         $versementResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)

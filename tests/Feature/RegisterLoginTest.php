@@ -12,6 +12,9 @@ class RegisterLoginTest extends TestCase
 
     use DatabaseTransactions;
 
+    // Déclaration des variables utilisées pour les tests
+    private $utilisateur;
+
     /**
      * Register un utilisateur afin de préparer le login
      * Cette méthode est lancée avec l'exécution de chaque test
@@ -24,7 +27,15 @@ class RegisterLoginTest extends TestCase
 
         // Génère un utilisateur
         $this->utilisateur = Utilisateur::factory()->make();
+    }
 
+    /**
+     * Test de la méthode POST Register en créant un nouvel utilisateur sans problème
+     *
+     * @return void
+     */
+    public function testRegister(): void
+    {
         // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
         $response = $this->post('api/utilisateur/register',
             [
@@ -47,33 +58,20 @@ class RegisterLoginTest extends TestCase
     }
 
     /**
-     * Test de la méthode POST Register en créant un nouvel utilisateur sans problème
-     *
-     * @return void
-     */
-    public function testRegister(): void
-    {
-        //Appelle le setup
-        parent::setUp();
-    }
-
-    /**
      * Test de la méthode POST Register en créant un nouvel utilisateur avec une adresse e-mail déjà existante
      *
      * @return void
      */
     public function testRegisterEmailAlreadyUsed(): void
     {
-        // Génère un utilisateur
-        $utilisateur = Utilisateur::factory()->make();
 
         // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
         $response = $this->post('api/utilisateur/register',
             [
-                'nom' => $utilisateur->nom,
-                'prenom' => $utilisateur->prenom,
-                'email' => $utilisateur->email,
-                'password' => $utilisateur->password
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
+                'email' => $this->utilisateur->email,
+                'password' => $this->utilisateur->password
             ]);
 
         $response->assertStatus(200); // Affirme que la réponse a un code d'état 200
@@ -81,19 +79,19 @@ class RegisterLoginTest extends TestCase
             'Message' => 'L\'utilisateur a bien été créé.'
         ]);
         $this->assertDatabaseHas('utilisateurs', [ // Check si la base de données contient l'utilisateur qui vient d'être ajouté
-            'nom' => $utilisateur->nom,
-            'prenom' => $utilisateur->prenom,
-            'email' => $utilisateur->email,
+            'nom' => $this->utilisateur->nom,
+            'prenom' => $this->utilisateur->prenom,
+            'email' => $this->utilisateur->email,
             // 'password' => $utilisateur->password
         ]);
 
         // Appelle la route api/utilisateur/register pour créer un second utilisateur avec les mêmes paramètres
         $secondResponse = $this->post('api/utilisateur/register',
             [
-                'nom' => $utilisateur->nom,
-                'prenom' => $utilisateur->prenom,
-                'email' => $utilisateur->email,
-                'password' => $utilisateur->password
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
+                'email' => $this->utilisateur->email,
+                'password' => $this->utilisateur->password
             ]);
 
         $secondResponse->assertStatus(409); // Affirme que la réponse a un code d'état 409
@@ -110,16 +108,14 @@ class RegisterLoginTest extends TestCase
      */
     public function testRegisterWithUnfilledValues(): void
     {
-        // Génère un utilisateur
-        $utilisateur = Utilisateur::factory()->make();
 
         // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
         $response = $this->post('api/utilisateur/register',
             [
-                'nom' => $utilisateur->nom,
-                'prenom' => $utilisateur->prenom,
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
                 'email' => '', //Non remplissage du champ e-mail
-                'password' => $utilisateur->password
+                'password' => $this->utilisateur->password
             ]);
 
         $response->assertStatus(500); // Affirme que la réponse a un code d'état 500
@@ -136,8 +132,14 @@ class RegisterLoginTest extends TestCase
      */
     public function testLogin(): void
     {
-        //Appelle le setup
-        parent::setUp();
+        // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
+        $this->post('api/utilisateur/register',
+            [
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
+                'email' => $this->utilisateur->email,
+                'password' => $this->utilisateur->password
+            ]);
 
         $loginResponse = $this->post('api/utilisateur/login',
             [
@@ -158,8 +160,14 @@ class RegisterLoginTest extends TestCase
      */
     public function testLoginBadPassword(): void
     {
-        //Appelle le setup
-        parent::setUp();
+        // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
+        $this->post('api/utilisateur/register',
+            [
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
+                'email' => $this->utilisateur->email,
+                'password' => $this->utilisateur->password
+            ]);
 
         $loginResponse = $this->post('api/utilisateur/login',
             [
@@ -181,8 +189,14 @@ class RegisterLoginTest extends TestCase
      */
     public function testLoginBadEmail(): void
     {
-        //Appelle le setup
-        parent::setUp();
+        // Appelle la route api/utilisateur/register pour créer un nouvel utilisateur
+        $this->post('api/utilisateur/register',
+            [
+                'nom' => $this->utilisateur->nom,
+                'prenom' => $this->utilisateur->prenom,
+                'email' => $this->utilisateur->email,
+                'password' => $this->utilisateur->password
+            ]);
 
         $loginResponse = $this->post('api/utilisateur/login',
             [
@@ -195,5 +209,4 @@ class RegisterLoginTest extends TestCase
             'error' => 'L\'adresse e-mail n\'existe pas.'
         ]);
     }
-
 }
