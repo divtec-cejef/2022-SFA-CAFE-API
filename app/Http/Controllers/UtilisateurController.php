@@ -49,7 +49,12 @@ class UtilisateurController extends Controller
 
         if (Hash::check($request->password, $utilisateur->password)) {
             return Response()->json([
-                'token' => $utilisateur->createToken(time())->plainTextToken
+                'user' => [
+                    'id' => $utilisateur->id,
+                    'nom' => $utilisateur->nom,
+                    'prenom' => $utilisateur->prenom,
+                    'token' => $utilisateur->createToken(time())->plainTextToken
+                ]
             ]);
         } else {
             return Response()->json([
@@ -118,9 +123,13 @@ class UtilisateurController extends Controller
         // Merge les deux tableaux et affiche la date de création pour chaque transaction
         $allTransactions = $allAchats->concat($allVersements)->makeVisible('created_at')->toArray();
 
+        foreach ($allTransactions as $key => $transaction) {
+            $allTransactions[$key]['created_at'] = date('Y-m-d H:i:s', strtotime($transaction['created_at']));
+        }
+
         // Trie la liste en fonction des dates (récentes -> anciennes)
         usort($allTransactions, function($a, $b) {
-            return strtotime($a['created_at']) + strtotime($b['created_at']);
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
         });
 
         if (!empty($allTransactions)) {
