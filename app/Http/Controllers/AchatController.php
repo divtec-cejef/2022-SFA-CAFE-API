@@ -34,12 +34,27 @@ class AchatController extends Controller
 //            Achat::create($data);
 
             return Response()->json([
-                'Message' => 'L\'achat a bien été effectué.'
+                'Message' => 'Votre achat a bien été effectué.'
             ]);
         } else {
             return Response()->json([
                 'Message' => 'L\'achat n\'a pas pu être effectué.'
             ]);
         }
+    }
+
+    /**
+     * Fonction d'effacement d'un virement
+     *
+     * @response 200
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteAchat($id): JsonResponse
+    {
+        Achat::findOrFail($id)->delete();
+        return Response()->json([
+            'Message' => 'L\'achat a bien été annulé.'
+        ]);
     }
 }

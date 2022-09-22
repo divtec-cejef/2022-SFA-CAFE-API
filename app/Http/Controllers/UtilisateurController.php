@@ -16,7 +16,7 @@ class UtilisateurController extends Controller
     /**
      * Crée un nouvel utilisateur
      *
-     * @response 201
+     * @response 200
      * @param Request $request
      * @return JsonResponse
      * @throws ValidationException
@@ -124,7 +124,7 @@ class UtilisateurController extends Controller
         $allTransactions = $allAchats->concat($allVersements)->makeVisible('created_at')->toArray();
 
         foreach ($allTransactions as $key => $transaction) {
-            $allTransactions[$key]['created_at'] = date('Y-m-d H:i:s', strtotime($transaction['created_at']));
+            $allTransactions[$key]['created_at'] = date('d.m.Y H:i', strtotime($transaction['created_at']));
         }
 
         // Trie la liste en fonction des dates (récentes -> anciennes)
