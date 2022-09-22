@@ -45,9 +45,9 @@ class RegisterLoginTest extends TestCase
                 'password' => $this->utilisateur->password
             ]);
 
-        $response->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $response->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $response->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
-            'Message' => 'L\'utilisateur a bien été créé.'
+            'message' => 'L\'utilisateur a bien été créé.'
         ]);
         $this->assertDatabaseHas('utilisateurs', [ // Check si la base de données contient l'utilisateur qui vient d'être ajouté
             'nom' => $this->utilisateur->nom,
@@ -74,9 +74,9 @@ class RegisterLoginTest extends TestCase
                 'password' => $this->utilisateur->password
             ]);
 
-        $response->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $response->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $response->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
-            'Message' => 'L\'utilisateur a bien été créé.'
+            'message' => 'L\'utilisateur a bien été créé.'
         ]);
         $this->assertDatabaseHas('utilisateurs', [ // Check si la base de données contient l'utilisateur qui vient d'être ajouté
             'nom' => $this->utilisateur->nom,
@@ -147,7 +147,7 @@ class RegisterLoginTest extends TestCase
                 'password' => $this->utilisateur->password
             ]);
 
-        $loginResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $loginResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $loginResponse->assertJson(fn (AssertableJson $json) => $json->has('token')); // Check si la réponse contient un champ token
 
     }
@@ -175,7 +175,7 @@ class RegisterLoginTest extends TestCase
                 'password' => '1234' // Mauvais mot de passe
             ]);
 
-        $loginResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $loginResponse->assertStatus(400); // Affirme que la réponse a un code d'état 400
         $loginResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'error' => 'Le mot de passe est incorrecte.'
         ]);

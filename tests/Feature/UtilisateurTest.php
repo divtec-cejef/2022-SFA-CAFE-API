@@ -6,7 +6,6 @@ use App\Models\Achat;
 use App\Models\Utilisateur;
 use App\Models\Versement;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class UtilisateurTest extends TestCase
@@ -100,7 +99,7 @@ class UtilisateurTest extends TestCase
                     'quantite'=> $quantite
                 ]);
 
-            $achatResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+            $achatResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
             $achatResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
                 'Message' => 'L\'achat a bien été effectué.'
             ]);
@@ -143,7 +142,7 @@ class UtilisateurTest extends TestCase
                     'quantite'=> $quantite
                 ]);
 
-            $achatResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+            $achatResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
             $achatResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
                 'Message' => 'L\'achat a bien été effectué.'
             ]);
@@ -155,7 +154,7 @@ class UtilisateurTest extends TestCase
                 'montant'=>10
             ]);
 
-        $versementResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $versementResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $versementResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'Le versement a bien été effectué.'
         ]);
@@ -185,7 +184,7 @@ class UtilisateurTest extends TestCase
                 'prix'=>0.5
             ]);
 
-        $achatResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $achatResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $achatResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'L\'achat a bien été effectué.'
         ]);
@@ -197,7 +196,7 @@ class UtilisateurTest extends TestCase
                 'montant'=>10
             ]);
 
-        $versementResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $versementResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $versementResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'Le versement a bien été effectué.'
         ]);
@@ -252,7 +251,7 @@ class UtilisateurTest extends TestCase
                 'prix'=>0.5
             ]);
 
-        $achatResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $achatResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $achatResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'L\'achat a bien été effectué.'
         ]);
@@ -284,7 +283,7 @@ class UtilisateurTest extends TestCase
                 'quantite'=>4
             ]);
 
-        $achatResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $achatResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $achatResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'L\'achat a bien été effectué.'
         ]);
@@ -320,7 +319,7 @@ class UtilisateurTest extends TestCase
                 'montant'=>20
             ]);
 
-        $versementResponse->assertStatus(200); // Affirme que la réponse a un code d'état 200
+        $versementResponse->assertStatus(201); // Affirme que la réponse a un code d'état 201
         $versementResponse->assertJson([ // Check si la réponse est la même que celle retournée à l'utilisateur
             'Message' => 'Le versement a bien été effectué.'
         ]);
