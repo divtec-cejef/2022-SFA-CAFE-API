@@ -41,3 +41,11 @@ Route::get('utilisateur/{id}/solde', [UtilisateurController::class, 'showSolde']
 // Route pour visualiser l'historique de ses transactions
 Route::get('utilisateur/{id}/historique', [UtilisateurController::class, 'showHistorique'])
     ->middleware('auth:sanctum');
+
+// Route pour supprimer un achat
+Route::delete('delete/achat/{id}', [AchatController::class, 'deleteAchat'])
+    ->middleware('auth:sanctum');
+
+// Route pour supprimer un versement
+Route::delete('delete/versement/{id}', [VersementController::class, 'deleteVersement'])
+    ->middleware('auth:sanctum');
