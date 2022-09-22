@@ -27,19 +27,19 @@ class VersementController extends Controller
                 'id_utilisateur' => $id
             ]);
             return Response()->json([
-                'Message' => 'Votre versement a bien été effectué.'
-            ]);
+                'message' => 'Votre versement a bien été effectué.'
+            ], 201);
         } else {
             return Response()->json([
-                'Message' => 'Le versement n\'a pas pu être effectué.'
-            ]);
+                'error' => 'Le versement n\'a pas pu être effectué.'
+            ], 500);
         }
     }
 
     /**
      * Fonction d'effacement d'un virement
      *
-     * @response 200
+     * @response 202
      * @param $id
      * @return JsonResponse
      */
@@ -47,7 +47,7 @@ class VersementController extends Controller
     {
         Versement::findOrFail($id)->delete();
         return Response()->json([
-            'Message' => 'Le versement a bien été annulé.'
-        ]);
+            'message' => 'Le versement a bien été annulé.'
+        ], 202);
     }
 }

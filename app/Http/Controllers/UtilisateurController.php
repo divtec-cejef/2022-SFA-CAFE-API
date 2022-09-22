@@ -16,7 +16,7 @@ class UtilisateurController extends Controller
     /**
      * Crée un nouvel utilisateur
      *
-     * @response 200
+     * @response 201
      * @param Request $request
      * @return JsonResponse
      * @throws ValidationException
@@ -30,15 +30,15 @@ class UtilisateurController extends Controller
             'password' => Hash::make($request->password)
         ]);
         return Response()->json([
-            'Message' => 'L\'utilisateur a bien été créé.'
-        ]);
+            'message' => 'L\'utilisateur a bien été créé.'
+        ], 201);
     }
 
     /**
      * Authentifier l'utilisateur avec email et mot de passe
      * Redistribue un token pour l'utilisateur
      *
-     * @response 200
+     * @response 201
      * @param Request $request
      * @return JsonResponse
      * @throws Throwable
@@ -55,11 +55,11 @@ class UtilisateurController extends Controller
                     'prenom' => $utilisateur->prenom,
                     'token' => $utilisateur->createToken(time())->plainTextToken
                 ]
-            ]);
+            ], 201);
         } else {
             return Response()->json([
                 'error' => 'Le mot de passe est incorrecte.'
-            ]);
+            ], 400);
         }
     }
 
@@ -101,7 +101,7 @@ class UtilisateurController extends Controller
         }
 
         return Response()->json([
-            'Solde' => $solde
+            'solde' => $solde
         ]);
     }
 
@@ -134,11 +134,11 @@ class UtilisateurController extends Controller
 
         if (!empty($allTransactions)) {
             return Response()->json([
-                'Historique' => $allTransactions
+                'historique' => $allTransactions
             ]);
         } else {
             return Response()->json([
-                'Historique' => 'Aucune transaction n\'a été effectué avec cet utilisateur.'
+                'message' => 'Vous n\'avez pas encore effectué de transaction ! Achetez donc un café ٩( ๑╹ ꇴ╹)۶'
             ]);
         }
     }
