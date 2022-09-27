@@ -41,7 +41,8 @@ class Utilisateur extends Model
             'prenom'   => 'string|required|max:100',
             'email'     => 'string|required|unique:utilisateurs,email|max:75',
             'password'   => 'string|required|max:75',
-            'actif'  => 'boolean'
+            'actif'  => 'boolean',
+            'admin' => 'boolean'
         ];
     }
 
@@ -55,7 +56,8 @@ class Utilisateur extends Model
         'prenom',
         'email',
         'password',
-        'actif'
+        'actif',
+        'admin'
     ];
 
     /**
@@ -67,5 +69,14 @@ class Utilisateur extends Model
     protected $hidden = [
         'created_at',
         'updated_at'
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'admin' => 'boolean',
     ];
 }
