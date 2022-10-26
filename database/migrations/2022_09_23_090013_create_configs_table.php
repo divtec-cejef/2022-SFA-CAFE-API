@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('config', function (Blueprint $table) {
+        Schema::create('configs', function (Blueprint $table) {
             $table->id();
             $table->string('nom', 100); // Nom de la valeur enregistrée
             $table->string('valeur', 100); // Valeur enregistrée
