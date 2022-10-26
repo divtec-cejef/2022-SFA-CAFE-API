@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): Response|JsonResponse
     {
-        // Erreurs générés suite au Register
+        // Erreurs générées suite au Register
         if ($e instanceof QueryException) {
             $errorCode = $e->errorInfo[1];
             if($errorCode == 1062){
@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
             }
         }
 
-        // Erreur généré suite au Login
+        // Erreur générée suite au Login
         if ($e instanceof ErrorException) {
             $errorCode = $e->getCode();
             if ($errorCode == 0) {
