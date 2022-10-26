@@ -77,6 +77,7 @@ class Utilisateur extends Model
      * @var array
      */
     protected $casts = [
-        'admin' => 'boolean',
+        'actif' => 'boolean',
+        'admin' => 'boolean'
     ];
 }
