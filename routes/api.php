@@ -42,10 +42,36 @@ Route::get('utilisateur/{id}/solde', [UtilisateurController::class, 'showSolde']
 Route::get('utilisateur/{id}/historique', [UtilisateurController::class, 'showHistorique'])
     ->middleware('auth:sanctum');
 
+// Route pour accéder aux paramètres de l'application en tant qu'utilisateur
+Route::get('settings', [UtilisateurController::class, 'getSettings'])
+    ->middleware('auth:sanctum');
+
 // Route pour supprimer un achat
 Route::delete('delete/achat/{id}', [AchatController::class, 'deleteAchat'])
     ->middleware('auth:sanctum');
 
 // Route pour supprimer un versement
 Route::delete('delete/versement/{id}', [VersementController::class, 'deleteVersement'])
+    ->middleware('auth:sanctum');
+
+/*--------------------------------------------- Administrateur ---------------------------------------------*/
+
+// Route pour accéder aux paramètres de l'application en tant qu'administrateur
+Route::get('administrateur/settings', [UtilisateurController::class, 'getAllSettings'])
+    ->middleware('auth:sanctum');
+
+// Route pour modifier un paramètre de l'application en tant qu'administrateur
+Route::put('administrateur/settings/update', [UtilisateurController::class, 'updateSetting'])
+    ->middleware('auth:sanctum');
+
+// Route pour récupérer les informations de tous les utilisateurs
+Route::get('administrateur/utilisateurs', [UtilisateurController::class, 'showAllUtilisateur'])
+    ->middleware('auth:sanctum');
+
+// Route pour activer/désactiver un utilisateur
+Route::patch('administrateur/utilisateur/{id}/statut', [UtilisateurController::class, 'changeStateUtilisateur'])
+    ->middleware('auth:sanctum');
+
+// Route pour supprimer un utilisateur
+Route::delete('administrateur/utilisateur/{id}/delete', [UtilisateurController::class, 'deleteUtilisateur'])
     ->middleware('auth:sanctum');
